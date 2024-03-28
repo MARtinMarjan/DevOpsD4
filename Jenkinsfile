@@ -1,17 +1,31 @@
-node {
-    def app
-    stage('Clone repository') {
-        checkout scm
-    }
-    stage('Build image') {
-       app = docker.build("martinmarjan/devopsv4")
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                checkout scm
+            }
+        }
         
-    }
-    stage('Push image') {   
-        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
-            app.push("${env.BRANCH_NAME}-latest")
-            // signal the orchestrator that there is a new version
+        stage('Build image') {
+            steps {
+                script {
+                    def app = docker.build("martinmarjan/devopsv4")
+                }
+            }
+        }
+        
+        stage('Push image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
+                        app.push("${env.BRANCH_NAME}-latest")
+                        // signal the orchestrator that there is a new version
+                    }
+                }
+            }
         }
     }
 }
