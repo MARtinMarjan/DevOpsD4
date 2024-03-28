@@ -5,6 +5,7 @@ node {
     }
     stage('Build image') {
        app = docker.build("martinmarjan/devopsd4")
+        
     }
     stage('Push image') {   
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
