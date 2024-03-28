@@ -5,7 +5,7 @@ pipeline {
         checkout scm
     }
     stage('Build image') {
-        app = docker.build('martinmarjan/devopsd4')
+        app = docker.build('marom1/devopsd4')
     }
     stage('Push image') {
         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
