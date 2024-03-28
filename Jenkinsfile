@@ -10,7 +10,7 @@ pipeline {
     stage('Build image') {
       steps {
         script {
-          def app = docker.build("martinmarjan/devopsv4")
+          def app = docker.build("martinmarjan/devopsd4")
         }
 
       }
