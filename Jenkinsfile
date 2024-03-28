@@ -11,7 +11,8 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    def app = docker.build('marom1/devopsd4')
+                    // Define app variable at the pipeline level
+                    app = docker.build('marom1/devopsd4')
                 }
             }
         }
@@ -19,6 +20,7 @@ pipeline {
         stage('Push image') {
             steps {
                 script {
+                    // Use the app variable defined at the pipeline level
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
                         app.push("${env.BRANCH_NAME}-latest")
